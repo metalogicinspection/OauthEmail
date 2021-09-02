@@ -14,8 +14,14 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
+            //localBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
-            SendMailWithXOAUTH2("software@metalogicinspection.com", "eyJ0eXAiOiJKV1QiLCJub25jZSI6IllQU3NJcnVRMlRDQi1FRTVsdzNFVS1JZzFSMG5fT2Q4Qm1fMlctWHA5aWMiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiJodHRwczovL291dGxvb2sub2ZmaWNlLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2UyNzM0MTZkLWVkNzItNGVkNC04MDYxLWEzOGQ5MDllZDM1Mi8iLCJpYXQiOjE2MzA2MDMwMjksIm5iZiI6MTYzMDYwMzAyOSwiZXhwIjoxNjMwNjA2OTI5LCJhY2N0IjowLCJhY3IiOiIxIiwiYWlvIjoiQVZRQXEvOFRBQUFBMGk1c0tnTHg0K2FkK29QSWlzY0pnRHNhOXBsOStMRWhPYTFpU1hYTEp3Z2g0cTl0eThxM2IyUFB5WWUvZ2IvQmpGOXNnbVZBT2ZiUFk3VitFNHNBL20xbFJpRUxpMlMxaVoySXgwUVJMams9IiwiYW1yIjpbInB3ZCIsIm1mYSJdLCJhcHBfZGlzcGxheW5hbWUiOiJNZXRhbG9naWMgRW1haWwiLCJhcHBpZCI6IjJhNTkzOGY0LTQzZDItNDY2OC1hZWYzLTU1MDYwM2I5MDEwOCIsImFwcGlkYWNyIjoiMCIsImVuZnBvbGlkcyI6W10sImlwYWRkciI6IjIwNy4yMjguMTA1LjIwNSIsIm5hbWUiOiJzb2Z0d2FyZSIsIm9pZCI6IjlmNzc0OWQ5LWExNTItNDJhYi04ZmQ3LTAxOTVhMmZjZTk0YiIsInB1aWQiOiIxMDAzMjAwMEJENkExMzFBIiwicHdkX2V4cCI6IjEyOTUyIiwicHdkX3VybCI6Imh0dHBzOi8vcG9ydGFsLm1pY3Jvc29mdG9ubGluZS5jb20vQ2hhbmdlUGFzc3dvcmQuYXNweCIsInJoIjoiMC5BUndBYlVGejRuTHQxRTZBWWFPTmtKN1RVdlE0V1NyU1EyaEdydk5WQmdPNUFRZ2NBT2suIiwic2NwIjoiU01UUC5TZW5kIiwic2lkIjoiNWM1NjAyNGItMDZhNy00MjA3LTg5MzgtMDlhNzg5MzQ5NGQyIiwic3ViIjoiX0gtVlpEcUZnajVLaWxaczg5ZmgxZkNYRlZHY3NramZMNWcwS3Uwb25GZyIsInRpZCI6ImUyNzM0MTZkLWVkNzItNGVkNC04MDYxLWEzOGQ5MDllZDM1MiIsInVuaXF1ZV9uYW1lIjoic29mdHdhcmVAbWV0YWxvZ2ljaW5zcGVjdGlvbi5jb20iLCJ1cG4iOiJzb2Z0d2FyZUBtZXRhbG9naWNpbnNwZWN0aW9uLmNvbSIsInV0aSI6IkplS09WbUdaM1VHZ3p0MWpKVnc0QUEiLCJ2ZXIiOiIxLjAiLCJ3aWRzIjpbImI3OWZiZjRkLTNlZjktNDY4OS04MTQzLTc2YjE5NGU4NTUwOSJdfQ.RljRQOXRouTRBU1T2vHtY_0i2Hudf8G91YI0zk1WnNoj0_l5hdm7G4JFI-yG7S_aseA4HjI9BV4Y-N-AVqbKpJcutyxewAlmSmXYBUsYGlysGY89hQQymsSetQK3vWtDpxaa8FQzDNbAV-jFAeBkl5Zad_fKOfRXyNkYtqaA5UAtJNe5QNqyc-z1dVmYeDoWZq2nfm1hWwAiADWKtY304BdsxqKEQisBUow94VqpV9bL4nJZvRq_ooM4SMySySWRh0SmCfn621UnJKlcnYpR8eLbgv1aELse4xtn9g5dAUzK7Xh9LtO8hrxlM3kBg5DvGY5QK162Nk2ngRon5jqtIw");
+            localBrowserPath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
+            if (!File.Exists(localBrowserPath))
+            {
+                localBrowserPath = "C:\\Program Files (x86)\\Microsoft\\Edge Beta\\Application\\msedge.exe";
+            }
+            //SendMailWithXOAUTH2("Jhe@metalogicinspection.com","eyJ0eXAiOiJKV1QiLCJub25jZSI6InVUbm81R0tMbWs4dVVsUWgzckMxQ0NjdnZRd09xbXVPbWlyTTctb3pYNzQiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiJodHRwczovL291dGxvb2sub2ZmaWNlLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2UyNzM0MTZkLWVkNzItNGVkNC04MDYxLWEzOGQ5MDllZDM1Mi8iLCJpYXQiOjE2MzA1MzUzOTMsIm5iZiI6MTYzMDUzNTM5MywiZXhwIjoxNjMwNTM5MjkzLCJhY2N0IjowLCJhY3IiOiIxIiwiYWlvIjoiQVRRQXkvOFRBQUFBK0pORWYxNGR5b0RjaHpOSE81NllhWnEyb0xQVVc1L094Mm9RR1pyWElXSENXOG1HMmxSVVVnZTVOZmJXNktvSSIsImFtciI6WyJwd2QiXSwiYXBwX2Rpc3BsYXluYW1lIjoiTWV0YWxvZ2ljIEVtYWlsIiwiYXBwaWQiOiIyYTU5MzhmNC00M2QyLTQ2NjgtYWVmMy01NTA2MDNiOTAxMDgiLCJhcHBpZGFjciI6IjAiLCJlbmZwb2xpZHMiOltdLCJmYW1pbHlfbmFtZSI6IkhlIiwiZ2l2ZW5fbmFtZSI6IkppYWh1aSIsImlwYWRkciI6IjIwNy4yMjguMTA1LjIwNSIsIm5hbWUiOiJKaWFodWkgSGUiLCJvaWQiOiJmYWQxMDUzZS1mNGY0LTQxYmMtODNkMi1mZTJkZWZkYWNmNDkiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMTA5MTA2NzUyMC0zMjQxMDM3MjEwLTI5MTg1MTk1My0xMjI5IiwicHVpZCI6IjEwMDM3RkZFOURDRThDNUMiLCJyaCI6IjAuQVJ3QWJVRno0bkx0MUU2QVlhT05rSjdUVXZRNFdTclNRMmhHcnZOVkJnTzVBUWdjQUd3LiIsInNjcCI6IlNNVFAuU2VuZCIsInNpZCI6IjI4ZTQ5MjYwLTI0MGEtNDFjOC1hNTdlLTMwZDBkZTc0MjdlMSIsInN1YiI6IjBTakxwanRZZXhzVmRBU3FIZzQyLVdoVzBvQ3BWN25kaHo0eFJ1MTh5bVUiLCJ0aWQiOiJlMjczNDE2ZC1lZDcyLTRlZDQtODA2MS1hMzhkOTA5ZWQzNTIiLCJ1bmlxdWVfbmFtZSI6IkpIZUBNZXRhbG9naWNJbnNwZWN0aW9uLmNvbSIsInVwbiI6IkpIZUBNZXRhbG9naWNJbnNwZWN0aW9uLmNvbSIsInV0aSI6IjJqNlNZX2c1MVVpSEFkaC1VVllRQUEiLCJ2ZXIiOiIxLjAiLCJ3aWRzIjpbImI3OWZiZjRkLTNlZjktNDY4OS04MTQzLTc2YjE5NGU4NTUwOSJdfQ.MYjAogzsFUHn9x1LDvt3zVqUCaya3f3pgYkKN2gbXsLyMEHCPtVYH_rsthFXgeqfRW-XBtPR683CD8uk7M-oFc3_ZUWPKnvLTexkQF3OAw7TIdrKOe9LXe-KIFBb6I3anyOFLJy2RICU6FrK3eRL3rcnmlnjBtjySXjMmpSqpDIu8evRp47qQYMVqhtqiqcGRGfCramDgweY27b_jqvcU9KJ3BZLTnF3QVHjpMOj9gKwzOW9CVYUPchEthsa2TKubQyBIEGrYvKc_1DhyGqozXs6rZnwL_W1g6qNkq8IqbXLxLjj7LjL_cvFsHQRXwobqTrSUPQjUyQznwXVYeSUkw");
             //Console.WriteLine("+------------------------------------------------------------------+");
             //Console.WriteLine("  Sign in with MS OAuth                                             ");
             //Console.WriteLine("   If you got \"This app isn't verified\" information in Web Browser, ");
@@ -25,16 +31,16 @@ namespace ConsoleApp2
             //Console.WriteLine("Press any key to sign in...");
             //Console.ReadKey();
 
-            //try
-            //{
-            //    Program p = new Program();
-            //    p.DoOauthAndSendEmail();
-            //}
-            //catch (Exception ep)
-            //{
-            //    Console.WriteLine(ep.ToString());
-            //}
-            //Console.ReadKey();
+            try
+            {
+                Program p = new Program();
+                p.DoOauth();
+            }
+            catch (Exception ep)
+            {
+                Console.WriteLine(ep.ToString());
+            }
+            Console.ReadKey();
         }
 
         static void SendMailWithXOAUTH2(string userEmail, string accessToken)
@@ -59,7 +65,7 @@ namespace ConsoleApp2
             oMail.From = userEmail;
 
             // Please change recipient address to yours for test
-            oMail.To = "jhe@MetalogicInspection.com";
+            oMail.To = "bsnow@MetalogicInspection.com";
 
             oMail.Subject = "test email from Office365 account with OAUTH 2";
             oMail.TextBody = "this is a test email sent from c# project with EWS.";
@@ -72,6 +78,7 @@ namespace ConsoleApp2
             Console.WriteLine("The email has been submitted to server successfully!");
         }
 
+        static string localBrowserPath = string.Empty;
         // client configuration
         // You should create your client id and client secret,
         // do not use the following client id in production environment, it is used for test purpose only.
@@ -96,10 +103,10 @@ namespace ConsoleApp2
             return port;
         }
 
-        async void DoOauthAndSendEmail()
+        async void DoOauth()
         {
             // Creates a redirect URI using an available port on the loopback address.
-            string redirectUri = string.Format("http://127.0.0.1:{0}/", GetRandomUnusedPort());
+            string redirectUri = string.Format("http://127.0.0.1:{0}/", "53977");
             Console.WriteLine("redirect URI: " + redirectUri);
 
             // Creates an HttpListener to listen for requests on that redirect URI.
@@ -109,15 +116,16 @@ namespace ConsoleApp2
             http.Start();
 
             // Creates the OAuth 2.0 authorization request.
-            string authorizationRequest = string.Format("{0}?response_type=code&scope={1}&redirect_uri={2}&client_id={3}&prompt=login",
+            var authorizationRequest = string.Format("{0}?response_type=code&scope={1}&redirect_uri={2}&client_id={3}",
+            //var authorizationRequest = string.Format("{0}?response_type=code&grant_type=refresh_token&scope={1}&redirect_uri={2}&client_id={3}",
                 authUri,
                 scope,
                 Uri.EscapeDataString(redirectUri),
                 clientID
             );
-            
+
             // Opens request in the browser.
-            Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", authorizationRequest);
+            Process.Start(localBrowserPath, authorizationRequest);
 
             // Waits for the OAuth authorization response.
             var context = await http.GetContextAsync();
@@ -160,10 +168,10 @@ namespace ConsoleApp2
             var code = context.Request.QueryString.Get("code");
             Console.WriteLine("Authorization code: " + code);
 
-            string responseText = await RequestAccessToken(code, redirectUri);
+            var responseText = await RequestAccessToken(code, redirectUri);
             Console.WriteLine(responseText);
 
-            OAuthResponseParser parser = new OAuthResponseParser();
+            var parser = new OAuthResponseParser();
             parser.Load(responseText);
 
             var user = parser.EmailInIdToken;
@@ -172,8 +180,11 @@ namespace ConsoleApp2
             Console.WriteLine("User: {0}", user);
             Console.WriteLine("AccessToken: {0}", accessToken);
 
-            SendMailWithXOAUTH2(user, accessToken);
+            //SendMailWithXOAUTH2(user, accessToken);
         }
+
+
+
 
         async Task<string> RequestAccessToken(string code, string redirectUri)
         {

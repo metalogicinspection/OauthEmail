@@ -24,7 +24,6 @@ E:\OauthEmail\ConsoleApp2\bin\Debug\net5.0\ConsoleApp2.dll
 E:\OauthEmail\ConsoleApp2\bin\Debug\net5.0\ref\ConsoleApp2.dll
 E:\OauthEmail\ConsoleApp2\bin\Debug\net5.0\ConsoleApp2.pdb
 E:\OauthEmail\ConsoleApp2\bin\Debug\net5.0\EASendMail.dll
-E:\OauthEmail\ConsoleApp2\obj\Debug\net5.0\ConsoleApp2.csprojAssemblyReference.cache
 E:\OauthEmail\ConsoleApp2\obj\Debug\net5.0\ConsoleApp2.GeneratedMSBuildEditorConfig.editorconfig
 E:\OauthEmail\ConsoleApp2\obj\Debug\net5.0\ConsoleApp2.AssemblyInfoInputs.cache
 E:\OauthEmail\ConsoleApp2\obj\Debug\net5.0\ConsoleApp2.AssemblyInfo.cs
