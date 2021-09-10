@@ -38,6 +38,7 @@ namespace TokenUpdater
         {
             Console.WriteLine(DateTime.Now + "Start getting latest token");
 
+
             #region Delete old loacal stored tokens
             //the EASendMail dll will store the toknen in cur windows profile's download folder,
             //delete the ones from previous runs
@@ -58,9 +59,7 @@ namespace TokenUpdater
             }
             var p = new Program();
             p.DoOauth().Wait();
-            Thread.Sleep(new TimeSpan(0,0,30,5));
-
-            Main(args);
+           
 
 
 
@@ -165,9 +164,10 @@ namespace TokenUpdater
                 var user = parser.EmailInIdToken;
                 var accessToken = parser.AccessToken;
 
-                Console.WriteLine("User: {0}", user);
-                Console.WriteLine("AccessToken: {0}", accessToken);
+                //Console.WriteLine("User: {0}", user);
+                //Console.WriteLine("AccessToken: {0}", accessToken);
 
+                Console.WriteLine(DateTime.Now + " Got the token");
 
 
                 var blobCurFileClient = BlobContainer.GetBlobClient(tokenBlobPath);
@@ -177,8 +177,13 @@ namespace TokenUpdater
 
 
                 await blobCurFileClient.UploadAsync(stream, true, CancellationToken.None);
-                Console.WriteLine(DateTime.Now + "Uploaded token to blob");
+                Console.WriteLine(DateTime.Now + " Uploaded token to blob");
+                
+                Thread.Sleep(new TimeSpan(0,0,30,5));
+                var localtion = typeof(Program).Assembly.Location.Replace(".dll", ".exe");
+                Console.WriteLine(localtion);
 
+                Process.Start(localtion);
             }
             catch (Exception e)
             {
