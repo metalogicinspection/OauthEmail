@@ -15,3 +15,12 @@ C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
 
 4. Make sure auto login when windows starts:
 https://www.lifewire.com/how-do-i-auto-login-to-windows-2626066
+
+
+NOTE:
+For the error, check Error.txt
+For the last run log, check Log.txt
+
+
+Source Code:
+https://github.com/metalogicinspection/Reporting/tree/main/RadiographicLoaderMSI
