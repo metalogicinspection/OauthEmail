@@ -1,13 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "a8dR63rU+dFzO6rvAiN97ajKZhbT7Kdyk1rj0XLid+/QV34upUDMH9PYMv3VUcbqvhyPUuKw7lsgR+MDIbflnw==",
+  "dgSpecHash": "vpxeYMyXFaabSwBJpUOUjpaO7t7ygegOWlcwTIKl+X/TSmx/XovXSNw1kh1CcJr2j1xiwaYlAOuecr5PWwN+yw==",
   "success": true,
   "projectFilePath": "E:\\OauthEmail\\EmailClientSending\\EmailClientSending.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\azure.core\\1.19.0\\azure.core.1.19.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\azure.storage.blobs\\12.10.0\\azure.storage.blobs.12.10.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\azure.storage.common\\12.9.0\\azure.storage.common.12.9.0.nupkg.sha512",
-    "C:\\Users\\User\\.nuget\\packages\\easendmail\\7.7.1.1\\easendmail.7.7.1.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.0.0\\microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.6.0\\system.diagnostics.diagnosticsource.4.6.0.nupkg.sha512",

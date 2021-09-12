@@ -48,10 +48,6 @@
             "Azure.Storage.Blobs": {
               "target": "Package",
               "version": "[12.10.0, )"
-            },
-            "EASendMail": {
-              "target": "Package",
-              "version": "[7.7.1.1, )"
             }
           },
           "imports": [

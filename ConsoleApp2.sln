@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenUpdater", "TokenUpdater\TokenUpdater.csproj", "{4EB950A5-D0BA-4013-8F82-CCAAC4512BC6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailClientSending", "EmailClientSending\EmailClientSending.csproj", "{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{4EB950A5-D0BA-4013-8F82-CCAAC4512BC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4EB950A5-D0BA-4013-8F82-CCAAC4512BC6}.Release|x64.ActiveCfg = Release|x64
 		{4EB950A5-D0BA-4013-8F82-CCAAC4512BC6}.Release|x64.Build.0 = Release|x64
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Debug|x64.Build.0 = Debug|Any CPU
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Release|x64.ActiveCfg = Release|Any CPU
+		{A0F2E205-3E0E-4938-8E4F-9F90A2EFE791}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

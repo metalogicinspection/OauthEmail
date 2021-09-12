@@ -8,7 +8,6 @@ E:\OauthEmail\EmailClientSending\bin\Debug\net5.0\EmailClientSending.pdb
 E:\OauthEmail\EmailClientSending\bin\Debug\net5.0\Azure.Core.dll
 E:\OauthEmail\EmailClientSending\bin\Debug\net5.0\Azure.Storage.Blobs.dll
 E:\OauthEmail\EmailClientSending\bin\Debug\net5.0\Azure.Storage.Common.dll
-E:\OauthEmail\EmailClientSending\bin\Debug\net5.0\EASendMail.dll
 E:\OauthEmail\EmailClientSending\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
 E:\OauthEmail\EmailClientSending\bin\Debug\net5.0\System.Memory.Data.dll
 E:\OauthEmail\EmailClientSending\obj\Debug\net5.0\EmailClientSending.GeneratedMSBuildEditorConfig.editorconfig

@@ -16,7 +16,4 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgEASendMail Condition=" '$(PkgEASendMail)' == '' ">C:\Users\User\.nuget\packages\easendmail\7.7.1.1</PkgEASendMail>
-  </PropertyGroup>
 </Project>

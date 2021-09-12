@@ -8,7 +8,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Storage;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using EASendMail;
 
 namespace TokenUpdater
@@ -21,11 +23,7 @@ namespace TokenUpdater
         const string clientID = "2a5938f4-43d2-4668-aef3-550603b90108";
         const string clientSecret = "5dc832d2-bb26-4597-92d9-5e9b9d06e1b6";
         const string localPortForListerningToken = "53977";
-
-        /// <summary>
-        /// the path to store the token in blob storage server
-        /// </summary>
-        const string tokenBlobPath = "LatestEmailToken.txt";
+        
 
         private static readonly BlobContainerClient BlobContainer = new BlobContainerClient(
             "DefaultEndpointsProtocol=https;AccountName=metalogicreportingblob;AccountKey=3vWVwJcTe/2cmbKYnux7v+qk3cSkW1gbsyE1oVCKJ2kPk1uao4KiZMTxv65Sq/LK2UeDynvo4ZgvKOlHIC6wdA==;EndpointSuffix=core.windows.net",
@@ -57,12 +55,19 @@ namespace TokenUpdater
             {
                 localBrowserPath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
             }
-            var p = new Program();
-            p.DoOauth().Wait();
-           
 
-
-
+            try
+            {
+                var p = new Program();
+                p.DoOauth().Wait();
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteLog("Wait 5 mins to restart due to error: " , e);
+                File.WriteAllText("error.txt", e.ToString());
+                Thread.Sleep(new TimeSpan(0,0,5));
+                Main(args);
+            }
         }
         
 
@@ -89,112 +94,202 @@ namespace TokenUpdater
 
         async Task DoOauth()
         {
+            LogWriter.WriteLog("Start a new pass for email server");
+
+            // Creates a redirect URI using an available port on the loopback address.
+            //string redirectUri = string.Format("http://127.0.0.1:{0}/", localPortForListerningToken);
+            var redirectUri = string.Format("http://127.0.0.1:{0}/", localPortForListerningToken);
+
+            // Creates an HttpListener to listen for requests on that redirect URI.
+            var http = new HttpListener();
+            http.Prefixes.Add(redirectUri);
+            LogWriter.WriteLog("Listening ... from redirect URI:" + redirectUri);
             try
             {
-                // Creates a redirect URI using an available port on the loopback address.
-                //string redirectUri = string.Format("http://127.0.0.1:{0}/", localPortForListerningToken);
-                string redirectUri = string.Format("http://127.0.0.1:{0}/", localPortForListerningToken);
-                Console.WriteLine("redirect URI: " + redirectUri);
+                http.Start();
+            }
+            catch (Exception e)
+            {
+                LogWriter.WriteLog("Failed to start http server. ", e);
+                throw new Exception("failed to start");
+            }
 
-                // Creates an HttpListener to listen for requests on that redirect URI.
-                var http = new HttpListener();
-                http.Prefixes.Add(redirectUri);
-                Console.WriteLine("Listening ...");
-                try
+            // Creates the OAuth 2.0 authorization request.
+            var authorizationRequest =
+                $"{authUri}?response_type=code&scope={scope}&redirect_uri={Uri.EscapeDataString(redirectUri)}&client_id={clientID}";
+
+            // Opens request in the browser.
+            var proc = Process.Start(localBrowserPath, authorizationRequest);
+
+            // Waits for the OAuth authorization response.
+            var context = await http.GetContextAsync();
+
+            // Brings the Console to Focus.
+            BringConsoleToFront();
+
+            // Sends an HTTP response to the browser.
+            var response = context.Response;
+            //string responseString = string.Format("<html><head></head><body>Please return to the app and close current window.</body></html>");
+            //var buffer = Encoding.UTF8.GetBytes(responseString);
+            var buffer = new byte[1024];
+            response.ContentLength64 = buffer.Length;
+            var responseOutput = response.OutputStream;
+            response.OutputStream.Write(buffer, 0, buffer.Length);
+            http.Stop();
+            LogWriter.WriteLog("HTTP server stopped.");
+            Thread.Sleep(new TimeSpan(0,0,0,3));
+            proc.Kill();
+            LogWriter.WriteLog("Blowser Closed.");
+            var data = System.Text.Encoding.UTF8.GetString(buffer);
+
+            // Checks for errors.
+            if (context.Request.QueryString.Get("error") != null)
+            {
+                LogWriter.WriteLog(string.Format("OAuth authorization error: {0}.", context.Request.QueryString.Get("error")), EventLogEntryType.Error);
+                throw new Exception("OAuth authorization error");
+            }
+
+            if (context.Request.QueryString.Get("code") == null)
+            {
+                LogWriter.WriteLog("Malformed authorization response. " + context.Request.QueryString);
+                throw new Exception("Malformed authorization response");
+            }
+
+            // extracts the code
+            var code = context.Request.QueryString.Get("code");
+            var responseText = await RequestAccessToken(code, redirectUri);
+
+            var parser = new OAuthResponseParser();
+            parser.Load(responseText);
+
+            var user = parser.EmailInIdToken;
+            var accessToken = parser.AccessToken;
+
+
+            var durationBeforeTokenExpire = new TimeSpan(0, 45,0);
+            var intervalBetweenPulling = new TimeSpan(0, 0, 0, 3);
+            LogWriter.WriteLog(DateTime.Now + " Got the token , starting pulling emails from blob for another  " + durationBeforeTokenExpire.TotalMinutes + " minutes in every " + intervalBetweenPulling.TotalSeconds + " seconds");
+
+            for (var interIndex = 0; interIndex < durationBeforeTokenExpire/ intervalBetweenPulling; interIndex++)
+            {
+                var pendingEmailsList = BlobContainer.GetBlobs(prefix: "PendingOutEmails/").ToList();
+                LogWriter.WriteLog("found " + pendingEmailsList.Count + " emails");
+                foreach (var curPendingEmail in pendingEmailsList)
                 {
-                    http.Start();
+                    var stream2 = new MemoryStream();
+                    var cancelToken = new CancellationToken();
+                    var storageTransferOptions = new StorageTransferOptions
+                    {
+                        //bytes * 1000000 = MB
+                        InitialTransferSize = 1000000,
+                        MaximumConcurrency = 1,
+                        MaximumTransferSize = long.MaxValue
+                    };
 
+                    var blobRequestConditions = new BlobRequestConditions();
+
+
+                    var blobCurFileClient = BlobContainer.GetBlobClient(curPendingEmail.Name);
+
+                    var response2 = blobCurFileClient.DownloadTo(stream2, blobRequestConditions, storageTransferOptions, cancelToken);
+
+
+                    var emailContent = Encoding.ASCII.GetString(stream2.ToArray());
+
+                    var toEmail = string.Empty;
+                    var subject = string.Empty;
+                    var body = string.Empty;
+
+                    var readEmailFailed = true;
+                    try
+                    {
+                        var lines = emailContent.Split(Environment.NewLine);
+                        toEmail = lines[0];
+                        subject = lines[1];
+
+                        var bodySb = new StringBuilder();
+                        for (var i = 2; i < lines.Length; ++i)
+                        {
+                            bodySb.AppendLine(lines[i]);
+
+                        }
+
+                        body = bodySb.ToString();
+                        readEmailFailed = false;
+                    }
+                    catch (Exception e)
+                    {
+                        LogWriter.WriteLog("failed to match email format! ", e);
+                        readEmailFailed = true;
+                    }
+
+                    if (readEmailFailed)
+                    {
+                        blobCurFileClient.Delete();
+                    }
+                    else
+                    {
+                        LogWriter.WriteLog("Read Email " + curPendingEmail.Name);
+                        SendMailWithXOAUTH2(user, accessToken, toEmail, subject, body);
+                        blobCurFileClient.Delete();
+                    }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
 
-                // Creates the OAuth 2.0 authorization request.
-                var authorizationRequest =
-                    $"{authUri}?response_type=code&scope={scope}&redirect_uri={Uri.EscapeDataString(redirectUri)}&client_id={clientID}";
+                Thread.Sleep(intervalBetweenPulling);
+            }
+           
 
-                // Opens request in the browser.
-                var proc = Process.Start(localBrowserPath, authorizationRequest);
+            LogWriter.WriteLog("finished current loop");
 
-                // Waits for the OAuth authorization response.
-                var context = await http.GetContextAsync();
+            Thread.Sleep(new TimeSpan(0, 0, 0, 1));
+            var localtion = typeof(Program).Assembly.Location.Replace(".dll", ".exe");
 
-                // Brings the Console to Focus.
-                BringConsoleToFront();
-
-                // Sends an HTTP response to the browser.
-                var response = context.Response;
-                //string responseString = string.Format("<html><head></head><body>Please return to the app and close current window.</body></html>");
-                //var buffer = Encoding.UTF8.GetBytes(responseString);
-                var buffer = new byte[1024];
-                response.ContentLength64 = buffer.Length;
-                var responseOutput = response.OutputStream;
-                response.OutputStream.Write(buffer, 0, buffer.Length);
-                http.Stop();
-                Console.WriteLine("HTTP server stopped.");
-                proc.Kill();
-                Console.WriteLine("Blowser Closed.");
-                var data = System.Text.Encoding.UTF8.GetString(buffer);
-
-                // Checks for errors.
-                if (context.Request.QueryString.Get("error") != null)
-                {
-                    Console.WriteLine(string.Format("OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
-                    return;
-                }
-
-                if (context.Request.QueryString.Get("code") == null)
-                {
-                    Console.WriteLine("Malformed authorization response. " + context.Request.QueryString);
-                    return;
-                }
-
-                // extracts the code
-                var code = context.Request.QueryString.Get("code");
-                Console.WriteLine("Authorization code: " + code);
-
-                var responseText = await RequestAccessToken(code, redirectUri);
-                Console.WriteLine(responseText);
-
-                var parser = new OAuthResponseParser();
-                parser.Load(responseText);
-
-                var user = parser.EmailInIdToken;
-                var accessToken = parser.AccessToken;
-
-                //Console.WriteLine("User: {0}", user);
-                //Console.WriteLine("AccessToken: {0}", accessToken);
-
-                Console.WriteLine(DateTime.Now + " Got the token");
-
-
-                var blobCurFileClient = BlobContainer.GetBlobClient(tokenBlobPath);
-                var byteArray = Encoding.ASCII.GetBytes(accessToken);
-                var stream = new MemoryStream(byteArray);
-                 
-
-
-                await blobCurFileClient.UploadAsync(stream, true, CancellationToken.None);
-                Console.WriteLine(DateTime.Now + " Uploaded token to blob");
-                
-                Thread.Sleep(new TimeSpan(0,0,30,5));
-                var localtion = typeof(Program).Assembly.Location.Replace(".dll", ".exe");
-                Console.WriteLine(localtion);
-
+            try
+            {
                 Process.Start(localtion);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                File.WriteAllText("error.txt", e.ToString());
-                throw;
+                LogWriter.WriteLog("failed to start next pass", e);
             }
-           
+
         }
 
 
+        static void SendMailWithXOAUTH2(string userEmail, string accessToken, string toEmail, string subject, string body)
+        {
+            // Office365 server address
+            SmtpServer oServer = new SmtpServer("outlook.office365.com");
+
+            // Using 587 port, you can also use 465 port
+            oServer.Port = 587;
+            // enable SSL connection
+            oServer.ConnectType = SmtpConnectType.ConnectSSLAuto;
+
+            // use SMTP OAUTH 2.0 authentication
+            oServer.AuthType = SmtpAuthType.XOAUTH2;
+            // set user authentication
+            oServer.User = userEmail;
+            // use access token as password
+            oServer.Password = accessToken;
+
+            SmtpMail oMail = new SmtpMail("TryIt");
+            // Your email address
+            oMail.From = userEmail;
+
+            // Please change recipient address to yours for test
+            oMail.To = toEmail;
+
+            oMail.Subject = subject;
+            oMail.TextBody = body;
+            
+            LogWriter.WriteLog("start to send email using OAUTH 2.0 ...");
+
+            SmtpClient oSmtp = new SmtpClient();
+            oSmtp.SendMail(oServer, oMail);
+
+            LogWriter.WriteLog("Sent email to " + toEmail);
+        }
 
 
         async Task<string> RequestAccessToken(string code, string redirectUri)
