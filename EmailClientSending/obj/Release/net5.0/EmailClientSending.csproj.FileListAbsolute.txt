@@ -19,3 +19,4 @@ E:\OauthEmail\EmailClientSending\obj\Release\net5.0\EmailClientSending.dll
 E:\OauthEmail\EmailClientSending\obj\Release\net5.0\ref\EmailClientSending.dll
 E:\OauthEmail\EmailClientSending\obj\Release\net5.0\EmailClientSending.pdb
 E:\OauthEmail\EmailClientSending\obj\Release\net5.0\EmailClientSending.genruntimeconfig.cache
+E:\OauthEmail\EmailClientSending\obj\Release\net5.0\EmailClientSending.csprojAssemblyReference.cache
