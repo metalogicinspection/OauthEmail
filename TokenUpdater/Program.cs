@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -35,7 +36,6 @@ namespace TokenUpdater
         static void Main(string[] args)
         {
             Console.WriteLine(DateTime.Now + "Start getting latest token");
-
 
             #region Delete old loacal stored tokens
             //the EASendMail dll will store the toknen in cur windows profile's download folder,
@@ -172,7 +172,11 @@ namespace TokenUpdater
 
             for (var interIndex = 0; interIndex < durationBeforeTokenExpire/ intervalBetweenPulling; interIndex++)
             {
+#if DEBUG
+                var pendingEmailsList = BlobContainer.GetBlobs(prefix: "PendingOutEmailsDebug/").ToList();
+#else
                 var pendingEmailsList = BlobContainer.GetBlobs(prefix: "PendingOutEmails/").ToList();
+#endif
                 LogWriter.WriteLog("found " + pendingEmailsList.Count + " emails");
                 foreach (var curPendingEmail in pendingEmailsList)
                 {
@@ -199,6 +203,7 @@ namespace TokenUpdater
                     var toEmail = string.Empty;
                     var subject = string.Empty;
                     var body = string.Empty;
+                    var attachments = new List<Tuple<string, byte[]>>();
 
                     var readEmailFailed = true;
                     try
@@ -210,8 +215,21 @@ namespace TokenUpdater
                         var bodySb = new StringBuilder();
                         for (var i = 2; i < lines.Length; ++i)
                         {
+                            var parts = lines[i].Split();
+                            if (parts.Count() == 2 && IsGuid(parts[0]))
+                            {
+                                var curAttachmentRemoteFilePath = string.Concat("PendingOutEmailAttachments/", parts[0]);
+                                var curAttachmentBlobFileClient = BlobContainer.GetBlobClient(curAttachmentRemoteFilePath);
+                                byte[] attachmentByte = null;
+                                using (var ms = new MemoryStream())
+                                {
+                                    curAttachmentBlobFileClient.DownloadTo(ms);
+                                    attachmentByte = ms.ToArray();
+                                }
+                                attachments.Add(new Tuple<string, byte[]>(parts[1], attachmentByte));
+                                continue;
+                            }
                             bodySb.AppendLine(lines[i]);
-
                         }
 
                         body = bodySb.ToString();
@@ -230,7 +248,7 @@ namespace TokenUpdater
                     else
                     {
                         LogWriter.WriteLog("Read Email " + curPendingEmail.Name);
-                        SendMailWithXOAUTH2(user, accessToken, toEmail, subject, body);
+                        SendMailWithXOAUTH2(user, accessToken, toEmail, subject, body, attachments);
                         blobCurFileClient.Delete();
                     }
                 }
@@ -255,8 +273,16 @@ namespace TokenUpdater
 
         }
 
+        static bool IsGuid(string target)
+        {
+            if (!target.EndsWith(".dat"))
+            {
+                return false;
+            }
+            return Guid.TryParse(target.Substring(0, 36), out var guid);
+        }
 
-        static void SendMailWithXOAUTH2(string userEmail, string accessToken, string toEmail, string subject, string body)
+        static void SendMailWithXOAUTH2(string userEmail, string accessToken, string toEmail, string subject, string body, List<Tuple<string, byte[]>> attachments = null)
         {
             // Office365 server address
             SmtpServer oServer = new SmtpServer("outlook.office365.com");
@@ -282,7 +308,15 @@ namespace TokenUpdater
 
             oMail.Subject = subject;
             oMail.TextBody = body;
-            
+
+            if (attachments?.Count() > 0)
+            {
+                foreach (var attachment in attachments)
+                {
+                    oMail.AddAttachment(attachment.Item1, attachment.Item2);
+                }
+            }
+
             LogWriter.WriteLog("start to send email using OAUTH 2.0 ...");
 
             SmtpClient oSmtp = new SmtpClient();
