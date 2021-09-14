@@ -216,7 +216,7 @@ namespace TokenUpdater
                         for (var i = 2; i < lines.Length; ++i)
                         {
                             var parts = lines[i].Split();
-                            if (parts.Count() == 2 && IsGuid(parts[0]))
+                            if (parts.Length == 2 && IsGuid(parts[0]))
                             {
                                 var curAttachmentRemoteFilePath = string.Concat("PendingOutEmailAttachments/", parts[0]);
                                 var curAttachmentBlobFileClient = BlobContainer.GetBlobClient(curAttachmentRemoteFilePath);
