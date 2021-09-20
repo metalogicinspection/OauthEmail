@@ -1,4 +1,6 @@
 E:\OauthEmail\EmailClientSending\bin\Release\net5.0\EmailClientSending.exe
+E:\OauthEmail\EmailClientSending\bin\Release\net5.0\1.pdf
+E:\OauthEmail\EmailClientSending\bin\Release\net5.0\2.pdf
 E:\OauthEmail\EmailClientSending\bin\Release\net5.0\EmailClientSending.deps.json
 E:\OauthEmail\EmailClientSending\bin\Release\net5.0\EmailClientSending.runtimeconfig.json
 E:\OauthEmail\EmailClientSending\bin\Release\net5.0\EmailClientSending.runtimeconfig.dev.json

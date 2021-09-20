@@ -15,6 +15,16 @@ namespace EmailClientSending
 
         static void Main(string[] args)
         {
+
+
+            var blobCurFileClient = BlobContainer.GetBlobClient("PendingOutEmailAttachments/fbbee48e-1cc6-4686-aa75-b31e7783dfad.dat");
+
+            var stream2 = new MemoryStream();
+            blobCurFileClient.DownloadTo(stream2);
+            var bytes = stream2.ToArray();
+            File.WriteAllBytes("e:\\test.pdf", bytes);
+
+
             var bytes1 = File.ReadAllBytes("1.pdf");
             var bytes2 = File.ReadAllBytes("2.pdf");
             SendMailToRelayServer("jhe@metalogicinspection.com", "test5555555", "4948948", new List<Tuple<string, byte[]>>(){new Tuple<string, byte[]>("1.pdf", bytes1), new Tuple<string, byte[]>("2.pdf", bytes2)});

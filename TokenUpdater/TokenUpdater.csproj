@@ -6,6 +6,10 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\TokenUpdaterBin\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.9.1" />
     <PackageReference Include="EASendMail" Version="7.7.0.9" />
@@ -20,5 +24,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="start $(ProjectDir)$(OutDir)..\..\&#xD;&#xA;if $(ConfigurationName) == Release rd $(ProjectDir)\bin\Debug /s /q&#xD;&#xA;if $(ConfigurationName) == Debug rd $(ProjectDir)\bin\TokenUpdaterBin /s /q" />
+  </Target>
 
 </Project>
