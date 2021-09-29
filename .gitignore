@@ -3,10 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-<<<<<<< HEAD
-/ConsoleApp2/obj/Debug/net5.0/ConsoleApp2.csprojAssemblyReference.cache
-/.vs/slnx.sqlite
-=======
+
+*Installer.exe
+
+#debug setup
+
+
 # User-specific files
 *.rsuser
 *.suo
@@ -365,23 +367,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
->>>>>>> jiahui
-.vs/ConsoleApp2/v16/.suo
-EmailClientSending/bin/Debug/net5.0/EmailClientSending.dll
-EmailClientSending/bin/Debug/net5.0/EmailClientSending.exe
-EmailClientSending/bin/Debug/net5.0/EmailClientSending.pdb
-EmailClientSending/bin/Debug/net5.0/EmailClientSending.runtimeconfig.dev.json
-EmailClientSending/obj/Debug/net5.0/apphost.exe
-EmailClientSending/obj/Debug/net5.0/EmailClientSending.assets.cache
-EmailClientSending/obj/Debug/net5.0/EmailClientSending.csproj.CoreCompileInputs.cache
-EmailClientSending/obj/Debug/net5.0/EmailClientSending.dll
-EmailClientSending/obj/Debug/net5.0/EmailClientSending.GeneratedMSBuildEditorConfig.editorconfig
-EmailClientSending/obj/Debug/net5.0/EmailClientSending.genruntimeconfig.cache
-EmailClientSending/obj/Debug/net5.0/EmailClientSending.pdb
-EmailClientSending/obj/EmailClientSending.csproj.nuget.dgspec.json
-EmailClientSending/obj/EmailClientSending.csproj.nuget.g.props
-EmailClientSending/obj/project.assets.json
-EmailClientSending/obj/project.nuget.cache
-.vs/ConsoleApp2/v16/.suo
-EmailClientSending/obj/Debug/net5.0/EmailClientSending.csproj.FileListAbsolute.txt
-.vs/ConsoleApp2/v16/.suo
