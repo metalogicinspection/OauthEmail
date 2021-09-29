@@ -17,17 +17,17 @@ namespace EmailClientSending
         {
 
 
-            var blobCurFileClient = BlobContainer.GetBlobClient("PendingOutEmailAttachments/fbbee48e-1cc6-4686-aa75-b31e7783dfad.dat");
+            //var blobCurFileClient = BlobContainer.GetBlobClient("PendingOutEmailAttachments/fbbee48e-1cc6-4686-aa75-b31e7783dfad.dat");
 
-            var stream2 = new MemoryStream();
-            blobCurFileClient.DownloadTo(stream2);
-            var bytes = stream2.ToArray();
-            File.WriteAllBytes("e:\\test.pdf", bytes);
+            //var stream2 = new MemoryStream();
+            //blobCurFileClient.DownloadTo(stream2);
+            //var bytes = stream2.ToArray();
+            //File.WriteAllBytes("e:\\test.pdf", bytes);
 
 
-            var bytes1 = File.ReadAllBytes("1.pdf");
-            var bytes2 = File.ReadAllBytes("2.pdf");
-            SendMailToRelayServer("tshen@metalogicinspection.com", "test5555555", "4948948\nasdfafd\nadsfasfd", new List<Tuple<string, byte[]>>(){new Tuple<string, byte[]>("1.pdf", bytes1), new Tuple<string, byte[]>("2.pdf", bytes2)});
+            //var bytes1 = File.ReadAllBytes("1.pdf");
+            //var bytes2 = File.ReadAllBytes("2.pdf");
+            SendMailToRelayServer("bsnow@metalogicinspection.com", "asf324234", "4948948\nasdfafd\nadsfasfd");
         }
 
         static void SendMailToRelayServer(string toEmailAddress, string subject, string body, List<Tuple<string, byte[]>> attachments = null)
@@ -60,11 +60,8 @@ namespace EmailClientSending
             var stream = new MemoryStream(Encoding.ASCII.GetBytes(sb.ToString()));
 
             var fileName = Guid.NewGuid() + ".txt";
-# if DEBUG
-            var curEmailRemotePath = string.Concat("PendingOutEmailsDebug/", fileName);
-#else
+
             var curEmailRemotePath = string.Concat("PendingOutEmails/", fileName);
-#endif
 
             var blobCurFileClient = BlobContainer.GetBlobClient(curEmailRemotePath);
             blobCurFileClient.Upload(stream);

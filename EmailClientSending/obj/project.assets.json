@@ -451,11 +451,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\OauthEmail\\EmailClientSending\\EmailClientSending.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Source\\Repos\\OauthEmail\\EmailClientSending\\EmailClientSending.csproj",
       "projectName": "EmailClientSending",
-      "projectPath": "E:\\OauthEmail\\EmailClientSending\\EmailClientSending.csproj",
+      "projectPath": "C:\\Users\\User\\Source\\Repos\\OauthEmail\\EmailClientSending\\EmailClientSending.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "E:\\OauthEmail\\EmailClientSending\\obj\\",
+      "outputPath": "C:\\Users\\User\\Source\\Repos\\OauthEmail\\EmailClientSending\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\DevExpress 21.1\\Components\\Offline Packages",
